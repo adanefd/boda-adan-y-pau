@@ -24,37 +24,61 @@
 
         /* Hero optimizado para móvil */
         .hero { 
-            background: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('https://images.unsplash.com/photo-1544427920-c49ccfb85579?auto=format&fit=crop&w=800&q=80');
+            /* Cambiamos la URL por el nombre de tu archivo local */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('mateo.jpeg');
             background-size: cover; 
             background-position: center; 
-            min-height: 90vh;
+            min-height: 100vh; /* Altura completa para que luzca la foto */
             display: flex; 
             align-items: center; 
             justify-content: center; 
             text-align: center;
             padding: 20px;
+            color: white; /* Forzamos texto blanco para que resalte */
         }
 
         .title { 
             font-family: 'Cinzel', serif; 
-            font-size: 2.8rem; 
-            color: var(--dorado);
+            font-size: 3.5rem; 
+            color: #ffffff; /* Blanco para mejor contraste sobre la foto */
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombra para que el nombre destaque */
             margin-bottom: 10px;
         }
 
         /* Estilo del contador FlipDown */
+        /* Contenedor padre para centrar y evitar saltos */
         #flipdown-container {
             margin-top: 20px;
-            display: inline-block;
-            transform: scale(0.85); /* Un poco más pequeño para que quepa bien en iPhone SE/mini */
+            display: flex;
+            justify-content: center; /* Centra el reloj */
+            align-items: center;
+            width: 100%;
         }
 
-        /* Colores del reloj para Mateo (Azul y Blanco) */
-        .flipdown.flipdown__theme-dark .rotor, 
-        .flipdown.flipdown__theme-dark .rotor-top, 
-        .flipdown.flipdown__theme-dark .rotor-bottom {
-            background-color: #34495e; 
-            color: #ffffff;
+        /* Forzar una sola fila y ajustar tamaño */
+        .flipdown {
+            display: flex !important;
+            flex-wrap: nowrap !important; /* PROHIBE el salto de línea */
+            justify-content: center;
+            width: auto !important;
+            /* Ajuste de escala para que quepa en cualquier celular */
+            transform: scale(0.7); 
+            transform-origin: center center;
+        }
+
+        /* En pantallas un poco más grandes (tablets o PC) lo podemos ver más grande */
+        @media (min-width: 576px) {
+            .flipdown {
+                transform: scale(0.9);
+            }
+        }
+
+        /* Eliminar márgenes internos que estorban en móvil */
+        .flipdown .rotor-group {
+            padding-right: 10px !important;
+        }
+        .flipdown .rotor-group:last-child {
+            padding-right: 0 !important;
         }
 
         .section { padding: 50px 20px; }
@@ -103,14 +127,14 @@
                 <div id="flipdown" class="flipdown flipdown__theme-dark"></div>
             </div>
             
-            <p class="mt-4 fw-bold">Sábado 15 de Agosto, 2026</p>
+            <p class="mt-4 fw-bold">Sábado 20 de Junio, 2026</p>
         </div>
     </section>
 
     <section class="section container text-center">
         <div class="card-info">
             <h3 class="mb-3">Misa</h3>
-            <p>12:00 PM<br>Parroquia de San Pío X<br>León, Gto.</p>
+            <p>12:00 PM<br>Parroquia de San Ildelfonso<br>Guadalajara, Jal.</p>
             <a href="https://maps.google.com" class="map-link">📍 Ver ubicación en Maps</a>
         </div>
 
@@ -138,9 +162,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flipdown@0.3.2/dist/flipdown.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // Fecha: 15 de Agosto de 2026 a las 12:00
-            // Mes es 7 porque Enero es 0
-            const eventDate = new Date(2026, 7, 15, 12, 0, 0).getTime() / 1000;
+            // Fecha: 20 de Junio de 2026 a las 12:00
+            // Mes es 5 porque Junio es 5
+            const eventDate = new Date(2026, 5, 20, 12, 0, 0).getTime() / 1000;
 
             const flipdown = new FlipDown(eventDate)
                 .start()
