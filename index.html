@@ -20,106 +20,211 @@
             background-color: var(--azul-suave); 
             color: var(--texto);
             margin: 0;
+            overflow-x: hidden; /* Evita scrolls horizontales raros durante la animación */
         }
 
-        /* Hero optimizado para móvil */
+        /* --- HERO REESTRUCTURADO --- */
         .hero { 
-            /* Cambiamos la URL por el nombre de tu archivo local */
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('mateo.jpeg');
-            background-size: cover; 
-            background-position: center; 
-            min-height: 100vh; /* Altura completa para que luzca la foto */
+            position: relative;
+            min-height: 100vh;
             display: flex; 
             align-items: center; 
             justify-content: center; 
             text-align: center;
+            overflow: hidden; /* Importante para que la foto no se salga en el zoom */
+        }
+
+        /* Contenedor específico para la foto de fondo animada */
+        .hero-bg-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* Fondo */
+        }
+
+        .hero-bg-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Mantiene proporción de la foto */
+            object-position: center 20%; /* Ajusta el encuadre (20% para que se vea la cara) */
+            
+            /* Aplicamos la animación a la FOTO */
+            animation: photoZoomIn 3s ease-out both;
+            will-change: transform; /* Optimización para móvil */
+        }
+
+        /* Capa oscura (Overlay) para que se lea el texto */
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5); /* Negro semi-transparente */
+            z-index: 2; /* Sobre la foto */
+        }
+
+        /* Contenido (Texto/Contador) */
+        .hero .container {
+            position: relative;
+            z-index: 3; /* Sobre la capa oscura */
+            color: white;
             padding: 20px;
-            color: white; /* Forzamos texto blanco para que resalte */
+            
+            /* Aplicamos la animación al TEXTO, con un retraso */
+            animation: fadeInUp 1.5s ease-out 1s both; /* Empieza 1s después que la foto */
         }
 
         .title { 
             font-family: 'Cinzel', serif; 
             font-size: 3.5rem; 
-            color: #ffffff; /* Blanco para mejor contraste sobre la foto */
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5); /* Sombra para que el nombre destaque */
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             margin-bottom: 10px;
         }
 
-        /* Estilo del contador FlipDown */
-        /* Contenedor padre para centrar y evitar saltos */
-        #flipdown-container {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center; /* Centra el reloj */
-            align-items: center;
-            width: 100%;
-        }
+        /* --- ANIMACIONES CSS --- */
 
-        /* Forzar una sola fila y ajustar tamaño */
-        .flipdown {
-            display: flex !important;
-            flex-wrap: nowrap !important; /* PROHIBE el salto de línea */
-            justify-content: center;
-            width: auto !important;
-            /* Ajuste de escala para que quepa en cualquier celular */
-            transform: scale(0.7); 
-            transform-origin: center center;
-        }
-
-        /* En pantallas un poco más grandes (tablets o PC) lo podemos ver más grande */
-        @media (min-width: 576px) {
-            .flipdown {
-                transform: scale(0.9);
+        /* 1. Animación de Zoom Suave para la FOTO */
+        @keyframes photoZoomIn {
+            from {
+                transform: scale(1.15); /* Empieza un poco más grande */
+                opacity: 0; /* Empieza invisible */
+            }
+            to {
+                transform: scale(1); /* Termina en su tamaño original */
+                opacity: 1; /* Termina visible */
             }
         }
 
-        /* Eliminar márgenes internos que estorban en móvil */
-        .flipdown .rotor-group {
-            padding-right: 10px !important;
+        /* 2. Animación de Entrada para el TEXTO (Aparecer Arriba) */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translate3d(0, 30px, 0); /* 30px abajo */
+            }
+            to {
+                opacity: 1;
+                transform: translate3d(0, 0, 0); /* En su lugar */
+            }
         }
-        .flipdown .rotor-group:last-child {
-            padding-right: 0 !important;
+        /* Estilo para los contenedores de los mapas */
+        .map-container {
+            width: 100%;
+            height: 200px; /* Altura ideal para celular */
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 15px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
         }
 
-        .section { padding: 50px 20px; }
-        
-        .card-info {
-            background: white;
+        .map-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* --- NUEVO ESTILO DE ITINERARIO VISUAL --- */
+        .itinerario-container {
+            background-color: #ffffff; /* O puedes usar var(--dorado) si quieres el fondo rojo/dorado de la imagen */
+            padding: 40px 20px;
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            border-top: 5px solid var(--dorado);
         }
 
-        .btn-confirmar {
-            background-color: #25d366; /* Color WhatsApp */
-            color: white;
-            border-radius: 50px;
-            padding: 15px 40px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3);
-            transition: transform 0.2s;
+        .itinerario-row {
+            display: flex;
+            align-items: center;
+            padding: 25px 0;
+            border-bottom: 1px solid #eee;
         }
 
-        .btn-confirmar:hover { transform: translateY(-3px); color: white; }
+        .itinerario-row:last-child {
+            border-bottom: none;
+        }
 
-        .map-link {
+        .itinerario-icon {
+            flex: 0 0 80px; /* Tamaño del icono */
+            font-size: 3rem; /* Iconos grandes */
+            text-align: center;
+            margin-right: 20px;
             color: var(--dorado);
-            text-decoration: none;
-            font-weight: 600;
-            display: block;
-            margin-top: 10px;
         }
+
+        .itinerario-info {
+            text-align: left;
+        }
+
+        .itinerario-time {
+            display: block;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .itinerario-event {
+            font-size: 1.2rem;
+            color: var(--texto);
+            margin: 0;
+        }
+
+        /* --- ESTILOS PARA IMÁGENES DE LUGARES CON ANIMACIÓN --- */
+
+        /* Contenedor de la imagen en la tarjeta */
+        .card-img-container {
+            width: 100%;
+            height: 180px; /* Altura ideal para móvil */
+            overflow: hidden;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            position: relative;
+        }
+
+        .card-place-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        /* --- CLASES DE ANIMACIÓN SUTIL (FadeIn) --- */
+
+        /* Estado inicial: invisible y un poco abajo */
+        .fade-in-on-scroll {
+            opacity: 0;
+            transform: translate3d(0, 30px, 0);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            will-change: opacity, transform; /* Optimización */
+        }
+
+        /* Estado final: visible y en su lugar */
+        .fade-in-on-scroll.appear {
+            opacity: 1;
+            transform: translate3d(0, 0, 0);
+        }
+
+        /* --- RESTO DE ESTILOS (IGUALES) --- */
+        #flipdown-container { margin-top: 20px; display: flex; justify-content: center; align-items: center; width: 100%; }
+        .flipdown { display: flex !important; flex-wrap: nowrap !important; justify-content: center; width: auto !important; transform: scale(0.7); transform-origin: center center; }
+        .section { padding: 50px 20px; text-align: center; }
+        .card-info { background: white; border-radius: 20px; padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); margin-bottom: 20px; border-top: 5px solid var(--dorado); }
+        .btn-confirmar { background-color: #25d366; color: white; border-radius: 50px; padding: 15px 40px; font-weight: 600; text-decoration: none; display: inline-block; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.3); }
+        .map-link { color: var(--dorado); text-decoration: none; font-weight: 600; display: block; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <section class="hero">
+        <div class="hero-bg-container">
+            <img src="mateo.jpeg" alt="Mateo" class="hero-bg-image">
+        </div>
+
+        <div class="hero-overlay"></div>
+
         <div class="container">
-            <p class="text-uppercase mb-2" style="letter-spacing: 3px;">Mi Confirmación</p>
+            <p class="text-uppercase mb-2" style="letter-spacing: 3px; font-weight: 300;">Mi Confirmación</p>
             <h1 class="title">Mateo</h1>
             <p class="fs-5">Acompáñame a recibir el Espíritu Santo</p>
             
@@ -127,28 +232,94 @@
                 <div id="flipdown" class="flipdown flipdown__theme-dark"></div>
             </div>
             
-            <p class="mt-4 fw-bold">Sábado 20 de Junio, 2026</p>
+            <p class="mt-4 fw-bold">Sábado 20 de junio del 2026</p>
         </div>
     </section>
 
     <section class="section container text-center">
-        <div class="card-info">
-            <h3 class="mb-3">Misa</h3>
-            <p>12:00 PM<br>Parroquia de San Ildelfonso<br>Guadalajara, Jal.</p>
-            <a href="https://maps.google.com" class="map-link">📍 Ver ubicación en Maps</a>
-        </div>
+        <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado);">Dónde y Cuándo</h2>
 
-        <div class="card-info">
-            <h3 class="mb-3">Recepción</h3>
-            <p>02:30 PM<br>Salón de Eventos "La Granja"</p>
-            <a href="https://maps.google.com" class="map-link">📍 Cómo llegar al salón</a>
+        <div class="row">
+            <div class="col-md-6 mb-4 fade-in-on-scroll">
+                <div class="card-info h-100">
+                    <h3 class="mb-4" style="font-family: 'Cinzel', serif;">Ceremonia</h3>
+                    
+                    <div class="card-img-container">
+                        <img src="templo.jpg" alt="Templo Expiatorio León" class="card-place-img">
+                    </div>
+
+                    <p>18:00 hrs<br>Templo Expiatorio<br>León, Guanajuato</p>
+                    <a href="https://maps.app.goo.gl/EGUsAUJa58WrSYjBA" class="btn-custom">Ver mapa</a>
+                </div>
+            </div>
+
+            <div class="col-md-6 mb-4 fade-in-on-scroll">
+                <div class="card-info h-100">
+                    <h3 class="mb-4" style="font-family: 'Cinzel', serif;">Recepción</h3>
+                    
+                    <div class="card-img-container">
+                        <img src="granja.jpg" alt="Jardín de Eventos" class="card-place-img">
+                    </div>
+
+                    <p>20:00 hrs<br>Jardín de Eventos "La Cabaña"<br>León, Gto.</p>
+                    <a href="https://maps.app.goo.gl/hFq57VCeWqgjceGAA" class="btn-custom">Cómo llegar</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section container">
+        <h2 class="mb-5" style="font-family: 'Cinzel', serif; color: var(--dorado);">Itinerario</h2>
+        
+        <div class="itinerario-container shadow-sm">
+            
+            <div class="itinerario-row">
+                <div class="itinerario-icon">⛪</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">12:00 PM</span>
+                    <p class="itinerario-event">Ceremonia Religiosa</p>
+                </div>
+            </div>
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🥂</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">02:30 PM</span>
+                    <p class="itinerario-event">Recepción y Bienvenida</p>
+                </div>
+            </div>
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🍽️</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">03:30 PM</span>
+                    <p class="itinerario-event">Comida Familiar</p>
+                </div>
+            </div>
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🎂</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">05:00 PM</span>
+                    <p class="itinerario-event">Pastel y Celebración</p>
+                </div>
+            </div>
+
+            <div class="itinerario-row">
+                <div class="itinerario-icon">🕺</div>
+                <div class="itinerario-info">
+                    <span class="itinerario-time">06:00 PM</span>
+                    <p class="itinerario-event">Convivencia y Música</p>
+                </div>
+            </div>
+
         </div>
     </section>
 
     <section class="section text-center bg-white">
         <div class="container">
             <h2 class="mb-4">¿Nos acompañas?</h2>
-            <p class="mb-5">Para nosotros es muy importante contar con tu presencia. Por favor confímanos antes del 1 de agosto.</p>
+            <p class="mb-5">Para nosotros es muy importante contar con tu presencia. Por favor corfirmanos antes del 1 de junio.</p>
             <a href="https://wa.me/521234567890?text=Hola!%20Confirmo%20mi%20asistencia%20para%20la%20confirmacion%20de%20Mateo" class="btn btn-confirmar">
                 Confirmar por WhatsApp
             </a>
@@ -171,6 +342,35 @@
                 .ifEnded(() => {
                     document.getElementById('flipdown-container').innerHTML = "<h4>¡Es hoy!</h4>";
                 });
+        });
+    </script>
+        <script>
+        // --- LÓGICA PARA ANIMACIÓN AL HACER SCROLL ---
+        document.addEventListener("DOMContentLoaded", function() {
+            const elementsToAnimate = document.querySelectorAll(".fade-in-on-scroll");
+
+            // Configuración del Observador
+            const observerOptions = {
+                root: null, // Usa la ventana (viewport)
+                rootMargin: "0px",
+                threshold: 0.2 // Se dispara cuando el 20% del elemento es visible
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Si el elemento entra en la vista, añade la clase 'appear'
+                        entry.target.classList.add("appear");
+                        // Opcional: deja de observar después de aparecer
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            // Activamos el observador para cada elemento
+            elementsToAnimate.forEach(element => {
+                observer.observe(element);
+            });
         });
     </script>
 </body>
