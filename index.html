@@ -10,17 +10,27 @@
 
     <style>
         :root {
-            --dorado: #c5a059;
-            --azul-suave: #f0f4f8;
-            --texto: #4a4a4a;
-        }
+        --dorado: #c5a059;
+        /* CAMBIA ESTA VARIABLE: */
+        --fondo-personalizado: #f4f1ea; 
+        --texto: #4a4a4a;
+    }
 
         body { 
             font-family: 'Montserrat', sans-serif; 
-            background-color: var(--azul-suave); 
+            /* Aplicamos el nuevo color aquí: */
+            background-color: var(--fondo-personalizado); 
             color: var(--texto);
             margin: 0;
-            overflow-x: hidden; /* Evita scrolls horizontales raros durante la animación */
+            overflow-x: hidden;
+        }
+
+        /* Opcional: Si quieres que las tarjetas de información resalten más, 
+        asegúrate de que sigan siendo blancas puras */
+        .card-info, .itinerario-container {
+            background-color: #ffffff !important;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03); /* Sombra más suave */
         }
 
         /* --- HERO REESTRUCTURADO --- */
@@ -62,8 +72,9 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5); /* Negro semi-transparente */
-            z-index: 2; /* Sobre la foto */
+            /* Degradado que va de negro arriba a tu nuevo color abajo */
+            background: linear-gradient(to bottom, rgba(0,0,0,0.5) 70%, var(--fondo-personalizado) 100%);
+            z-index: 2;
         }
 
         /* Contenido (Texto/Contador) */
@@ -80,7 +91,7 @@
         .title { 
             font-family: 'Cinzel', serif; 
             font-size: 3.5rem; 
-            color: #ffffff;
+            color: #C5A059;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
             margin-bottom: 10px;
         }
@@ -245,10 +256,10 @@
                     <h3 class="mb-4" style="font-family: 'Cinzel', serif;">Ceremonia</h3>
                     
                     <div class="card-img-container">
-                        <img src="templo.jpg" alt="Templo Expiatorio León" class="card-place-img">
+                        <img src="templo.jpg" alt="Parroquia de San Ildelfonso" class="card-place-img">
                     </div>
 
-                    <p>18:00 hrs<br>Templo Expiatorio<br>León, Guanajuato</p>
+                    <p>18:00 hrs<br>Parroquia de San Ildelfonso<br>León, Guanajuato</p>
                     <a href="https://maps.app.goo.gl/EGUsAUJa58WrSYjBA" class="btn-custom">Ver mapa</a>
                 </div>
             </div>
@@ -261,7 +272,7 @@
                         <img src="granja.jpg" alt="Jardín de Eventos" class="card-place-img">
                     </div>
 
-                    <p>20:00 hrs<br>Jardín de Eventos "La Cabaña"<br>León, Gto.</p>
+                    <p>20:00 hrs<br>Terraza con alberca "La Granja"<br>León, Gto.</p>
                     <a href="https://maps.app.goo.gl/hFq57VCeWqgjceGAA" class="btn-custom">Cómo llegar</a>
                 </div>
             </div>
